@@ -41,17 +41,37 @@ extern "C" {
 #include "LT_Wire.h"
 #include "Arduino.h" //for serial debug
 
+//! I2C baud rate
+#ifndef SECURE_I2C_BAUD_RATE
+#define SECURE_I2C_BAUD_RATE 400
+#endif
+
 // Constructors ////////////////////////////////////////////////////////////////
 
 LT_TwoWire::LT_TwoWire()
 {
+  if (SECURE_I2C_BAUD_RATE == 400){
+	 TwoWire::setClock(400000);
+	 twi_setFrequency(400000);
+  }
+  
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
 
 void LT_TwoWire::begin(uint32_t speed)
 {
+  if (SECURE_I2C_BAUD_RATE == 400){
+	 TwoWire::setClock(400000);
+	  twi_setFrequency(400000);
+  }
+  
   TwoWire::begin();
+  
+    if (SECURE_I2C_BAUD_RATE == 400){
+	 TwoWire::setClock(400000);
+	  twi_setFrequency(400000);
+  }
 }
 
 

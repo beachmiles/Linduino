@@ -89,6 +89,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define F_CPU 16000000UL
 #endif
 
+//! CPU master clock frequency
+#ifndef SECURE_I2C_BAUD_RATE
+#define SECURE_I2C_BAUD_RATE 400
+
+#endif
+
 // Read a byte, store in "value".
 int8_t i2c_read_byte(uint8_t address, uint8_t *value)
 {
@@ -413,10 +419,21 @@ void quikeval_I2C_connect(void)
 // i2c_enable or quikeval_I2C_init must be called before using any of the other I2C routines.
 void i2c_enable()
 {
-  // set these for 100KHz to match the DC590
-  TWSR = (HARDWARE_I2C_PRESCALER_4 & 0x03);  //! 1) set the prescaler bits
-  TWBR = 18;                                 //! 2) set the bit rate
-
+	//I2C Frequency  Prescaler  TWSR1  TWSR0  TWBR
+	//  100khz        4         0      1      18
+	//  400khz        1         0      0      12
+  
+    // set these for 100KHz to match the DC590
+	if (SECURE_I2C_BAUD_RATE != 400){
+	  TWSR = (HARDWARE_I2C_PRESCALER_4 & 0x03);  //! 1) set the prescaler bits. HARDWARE_I2C_PRESCALER_4=1 for 100khz HARDWARE_I2C_PRESCALER_1=0 for 400khz
+	  TWBR = 18;                                 //! 2) set the bit rate. 100hz=18  400khz=12
+	}
+	
+	//else set for 400khz
+	else{		
+		TWSR = (HARDWARE_I2C_PRESCALER_1 & 0x03);  //! 1) set the prescaler bits. HARDWARE_I2C_PRESCALER_4 for 100khz HARDWARE_I2C_PRESCALER_1 for 400khz
+		TWBR = 12;                                 //! 2) set the bit rate.  100hz=18  400khz=12
+	}
 }
 
 

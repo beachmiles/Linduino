@@ -56,9 +56,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "Linduino.h"
 #include "LT_I2CBus.h"
 
+//! I2C baud rate
+#ifndef SECURE_I2C_BAUD_RATE
+#define SECURE_I2C_BAUD_RATE 400
+#endif
+
 LT_I2CBus::LT_I2CBus()
 {
-  speed_ = 100000;
+  if (SECURE_I2C_BAUD_RATE == 400){
+	  speed_ = 400000;
+  }
+  else{
+	speed_ = 100000;
+  }
   LT_Wire.begin(speed_);
   inGroupProtocol_ = false;
 }
@@ -68,6 +78,8 @@ LT_I2CBus::LT_I2CBus(uint32_t speed)
   speed_ = speed;
   LT_Wire.begin(speed_);
   inGroupProtocol_ = false;
+  
+  
 }
 
 void LT_I2CBus::changeSpeed(uint32_t speed)

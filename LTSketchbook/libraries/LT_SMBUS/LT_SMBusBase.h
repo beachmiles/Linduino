@@ -80,6 +80,9 @@ class LT_SMBusBase : public LT_SMBus
       i2cbus_ = i2cbus;
     }
 
+   //! Get the speed of the bus.
+    uint32_t getSpeed(void);
+	
     //! SMBus write byte command
     //! @return void
     void writeByte(uint8_t address,     //!< Slave address

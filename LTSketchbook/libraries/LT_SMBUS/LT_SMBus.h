@@ -128,6 +128,9 @@ class LT_SMBus
     //! @return address
     virtual uint8_t readAlert(void) = 0;
 
+	//! Get the speed of the bus.
+    virtual uint32_t getSpeed(void);
+	
     //! SMBus write byte command
     //! @return void
     virtual void writeByte(uint8_t address,   //!< Slave address

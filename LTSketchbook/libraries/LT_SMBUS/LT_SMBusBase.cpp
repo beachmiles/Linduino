@@ -92,6 +92,12 @@ LT_SMBusBase::~LT_SMBusBase()
   delete i2cbus_;
 }
 
+uint32_t LT_SMBusBase::getSpeed(void)
+{
+  return i2cbus_->getSpeed();
+}
+
+
 uint8_t LT_SMBusBase::readAlert(void)
 {
   uint8_t address;
@@ -121,7 +127,7 @@ uint8_t *LT_SMBusBase::probe(uint8_t command)
   uint8_t   address;
   uint8_t   found = 0;
 
-  for (address = 0x10; address < 0x7F; address++)
+  for (address = 0x10; address < 0xA8; address++)
   {
     if (address == 0x0C)
       continue;
@@ -147,7 +153,7 @@ uint8_t *LT_SMBusBase::probeUnique(uint8_t command)
   uint8_t   address;
   uint8_t   found = 0;
 
-  for (address = 0x10; address < 0x7F; address++)
+  for (address = 0x10; address < 0xA8; address++)
   {
     if (address == 0x0C)
       continue;
